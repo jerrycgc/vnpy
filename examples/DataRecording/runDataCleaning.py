@@ -68,7 +68,7 @@ def runDataCleaning():
     # 遍历执行清洗
     today = datetime.now()
     start = today - timedelta(10)   # 清洗过去10天数据
-    start.replace(hour=0, minute=0, second=0, microsecond=0)
+    start = start.replace(hour=0, minute=0, second=0, microsecond=0)
     
     for l in setting['tick']:
         symbol = l[0]
