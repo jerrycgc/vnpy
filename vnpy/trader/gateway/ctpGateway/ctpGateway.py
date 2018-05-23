@@ -390,16 +390,19 @@ class CtpMdApi(MdApi):
         if tick.exchange is EXCHANGE_DCE:
             newTime = datetime.strptime(tick.time, '%H:%M:%S.%f').time()    # 最新tick时间戳
             
+            """
             # 如果新tick的时间小于夜盘分隔，且上一个tick的时间大于夜盘分隔，则意味着越过了12点
             if (self.tickTime and 
                 newTime < NIGHT_TRADING and
                 self.tickTime > NIGHT_TRADING):
                 self.tradingDt += timedelta(1)                          # 日期加1
                 self.tradingDate = self.tradingDt.strftime('%Y%m%d')    # 生成新的日期字符串
-                
-            tick.date = self.tradingDate    # 使用本地维护的日期
+            """
+
+            #夜盘时间用本地日期
+            if newTime > NIGHT_TRADING:
+                tick.date = datetime.now().strftime('%Y%m%d')    # 使用本地维护的日期
             
-            self.tickTime = newTime         # 更新上一个tick时间
         
         self.gateway.onTick(tick)
         
