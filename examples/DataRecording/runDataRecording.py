@@ -8,6 +8,7 @@ from datetime import datetime, time
 from vnpy.event import EventEngine2
 from vnpy.trader.vtEvent import EVENT_LOG, EVENT_ERROR
 from vnpy.trader.vtEngine import MainEngine, LogEngine
+from vnpy.trader.vtObject import VtSubscribeReq
 from vnpy.trader.gateway import ctpGateway
 from vnpy.trader.app import dataRecorder
 
@@ -46,6 +47,16 @@ def runChildProcess():
 
     me.connect('CTP')
     le.info(u'连接CTP接口')
+    
+    contracts = me.getAllContracts()
+    while len(contracts) == 0:
+        sleep(1)
+        contracts = me.getAllContracts()
+    print(u"共获取" + str(len(contracts)) + u"条合约信息")
+    for contract in contracts:
+        req = VtSubscribeReq()
+        req.symbol = contract.symbol
+        me.subscribe(req, 'CTP')
 
     while True:
         sleep(1)
@@ -59,10 +70,10 @@ def runParentProcess():
     le.addConsoleHandler()
     le.info(u'启动行情记录守护父进程')
     
-    DAY_START = time(8, 57)         # 日盘启动和停止时间
+    DAY_START = time(8, 55)         # 日盘启动和停止时间
     DAY_END = time(15, 18)
-    NIGHT_START = time(20, 57)      # 夜盘启动和停止时间
-    NIGHT_END = time(2, 33)
+    NIGHT_START = time(20, 55)      # 夜盘启动和停止时间
+    NIGHT_END = time(2, 35)
     
     p = None        # 子进程句柄
 
