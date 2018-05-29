@@ -48,9 +48,17 @@ def runChildProcess():
     me.connect('CTP')
     le.info(u'连接CTP接口')
     
+    #获取全部合约信息并自动订阅
     contracts = me.getAllContracts()
     while len(contracts) == 0:
         sleep(1)
+        contracts = me.getAllContracts()
+    print(u"共获取" + str(len(contracts)) + u"条合约信息")
+    for contract in contracts:
+        req = VtSubscribeReq()
+        req.symbol = contract.symbol
+        me.subscribe(req, 'CTP')
+        me.getApp(dataRecorder.appName).tickSymbolSet.add(req.symbol)
 
     while True:
         sleep(1)
