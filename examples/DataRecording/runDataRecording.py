@@ -57,7 +57,7 @@ def runChildProcess():
     for contract in contracts:
         req = VtSubscribeReq()
         req.symbol = contract.symbol
-        me.subscribe(req, 'CTP')
+        me.subscribe(req, contract.gatewayName)
         me.getApp(dataRecorder.appName).tickSymbolSet.add(req.symbol)
 
     while True:
