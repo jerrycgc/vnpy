@@ -51,18 +51,6 @@ def runChildProcess():
     contracts = me.getAllContracts()
     while len(contracts) == 0:
         sleep(1)
-        contracts = me.getAllContracts()
-    print(u"共获取" + str(len(contracts)) + u"条合约信息")
-    tickSymbolSet = set()
-    for contract in contracts:
-        req = VtSubscribeReq()
-        req.symbol = contract.symbol
-        req.exchange = contract.exchange
-        req.productClass = contract.productClass
-        me.subscribe(req, contract.gatewayName)
-        vtSymbol = '.'.join([req.symbol, req.exchange])
-        tickSymbolSet.add(vtSymbol)
-    me.getApp(dataRecorder.appName).tickSymbolSet = tickSymbolSet
 
     while True:
         sleep(1)
