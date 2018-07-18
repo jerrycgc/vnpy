@@ -402,6 +402,7 @@ class CtpMdApi(MdApi):
             #夜盘时间用本地日期
             if newTime > NIGHT_TRADING:
                 tick.date = datetime.now().strftime('%Y%m%d')    # 使用本地维护的日期
+        tick.tradingDay = self.tradingDate
             
         
         self.gateway.onTick(tick)
