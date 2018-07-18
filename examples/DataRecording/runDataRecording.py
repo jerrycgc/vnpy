@@ -55,10 +55,11 @@ def runChildProcess():
         contracts = me.getAllContracts()
     print(u"共获取" + str(len(contracts)) + u"条合约信息")
     for contract in contracts:
-        req = VtSubscribeReq()
-        req.symbol = contract.symbol
-        me.subscribe(req, contract.gatewayName)
-        me.getApp(dataRecorder.appName).tickSymbolSet.add(req.symbol)
+        if contract.productClass == u"期货":
+            req = VtSubscribeReq()
+            req.symbol = contract.symbol
+            me.subscribe(req, contract.gatewayName)
+            me.getApp(dataRecorder.appName).tickSymbolSet.add(req.symbol)
 
     while True:
         sleep(1)
